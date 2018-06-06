@@ -1,5 +1,7 @@
 const graphql = require('graphql');
 const axios = require('axios');
+const request = require('./../request');
+
 const {
     GraphQLObjectType,
     GraphQLString,
@@ -50,9 +52,7 @@ const RootQuery = new GraphQLObjectType({
             type : UserType,
             args : {id:{type:GraphQLString}},
             resolve(parentValue,args){
-                
-                return axios.get(`http://localhost:3000/users/${args.id}`)
-                    .then(resp=>resp.data);                   
+                return request.getUser(args.id).then(res=>res.data);             
             }
         },
         company:{
@@ -92,17 +92,6 @@ const mutation = new GraphQLObjectType({
                     .then(res=>res.data);
             }
         }
-    // deleteUser: {
-    //     type: UserType,
-    //     args: {
-    //       id: { type: new GraphQLNonNull(GraphQLString) }
-    //     },
-    //     resolve(parentValue, { id }) {
-    //       return axios.delete(`http://localhost:3000/users/${id}`)
-    //         .then(res => res.data);
-    //     }
-    //   }
-    
     }  
 });
 
